@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: gateway
+
+  # PostgreSQL
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ragdb
+    username: raguser
+    password: ragpass
+    driver-class-name: org.postgresql.Driver
+
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: update        # Auto-creates tables from your @Entity classes
+    show-sql: true            # Prints SQL to console — great for learning
+    properties:
+      hibernate:
+        format_sql: true      # Makes printed SQL readable
+
+  # Redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8081
+
+# Your custom config — we'll use these later
+app:
+  rate-limit:
+    requests-per-minute: 20
+  python-ai-service:
+    base-url: http://localhost:8000
