@@ -1,5 +1,20 @@
 package com.myrag.gateway.repository;
+import java.util.List;
+import java.util.Optional;
 
-public class UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.myrag.gateway.models.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+Optional<User> findByEmail(String email);
+
+Optional<User> findByHashedApiKey(String hashedApiKey);
+
+List<User> findByActiveTrue();
 
 }
+
