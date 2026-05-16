@@ -2,9 +2,12 @@ package com.myrag.gateway.Service;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.myrag.gateway.models.User;
 import com.myrag.gateway.repository.UserRepository;
 
+@Service
 public class UserService {
     private final UserRepository userRepository;
 
