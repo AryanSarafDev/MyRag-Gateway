@@ -33,3 +33,6 @@ app:
     requests-per-minute: 20
   python-ai-service:
     base-url: http://localhost:8000
+  jwt:
+    secret: mysecretkey
+    expiration: 86400000

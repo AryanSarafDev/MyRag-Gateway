@@ -54,5 +54,4 @@ public ResponseEntity<String> handleQuery(@RequestBody QueryRequest request) {
     return ResponseEntity.ok(response);
 }
 
-
 }
