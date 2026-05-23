@@ -34,5 +34,5 @@ app:
   python-ai-service:
     base-url: http://localhost:8000
   jwt:
-    secret: mysecretkey
+    secret: "your-super-secret-key-make-this-very-long-at-least-32-chars-minimum"
     expiration: 86400000

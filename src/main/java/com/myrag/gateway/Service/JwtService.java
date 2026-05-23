@@ -29,7 +29,7 @@ public class JwtService {
         subject(email).
         issuedAt(new Date()).
         expiration(new Date(System.currentTimeMillis() + expiration)).
-        signWith(getSigningKey()).
+        signWith(getSigningKey(),Jwts.SIG.HS256).
         compact();
     }
     public String extractEmail(String token){
@@ -39,7 +39,7 @@ public class JwtService {
     public boolean isTokenValid(String token) {
        try{
         Claims claim = extractClaims(token);
-        return !claim.getExpiration().after(new Date());
+        return claim.getExpiration().after(new Date());
        }catch(Exception e){
         return false;
        }
