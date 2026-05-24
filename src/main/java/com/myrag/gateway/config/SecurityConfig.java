@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,12 +34,10 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Tells Spring Security: "when you need to load a user, look in PostgreSQL"
-        // Without this, Spring creates its own inMemoryUserDetailsManager
-        // and ignores our database entirely
+    
         return email -> userRepository.findByEmail(email)
                 .map(user
-                        -> new org.springframework.security.core.userdetails.User(
+                        -> new User(
                         user.getEmail(),
                         user.getPassword(),
                         new ArrayList<>()
@@ -54,8 +53,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        // Newer Spring Security requires UserDetailsService in the constructor
-        // The no-args constructor no longer exists
+
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService());
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
@@ -65,9 +63,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                // These two lines are what was missing from your version
-                // Spring Boot enables these by default — they bring in their
-                // own UserDetailsService which conflicts with ours
+      
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
