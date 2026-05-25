@@ -17,34 +17,33 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter{
+public class JwtAuthFilter extends OncePerRequestFilter {
+
     private final JwtService jwtService;
 
     public JwtAuthFilter(JwtService jwtService) {
         this.jwtService = jwtService;
     }
-    
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        if(authHeader == null || !authHeader.startsWith("Bearer "))
-        {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = authHeader.substring(7);
-        if(jwtService.isTokenValid(token)){
+        if (jwtService.isTokenValid(token)) {
             String email = jwtService.extractEmail(token);
-            System.out.println("✅ JWT valid for: " + email); 
+            System.out.println("✅ JWT valid for: " + email);
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, null, new ArrayList<>());
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
-         filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);
 
     }
-     
 
 }

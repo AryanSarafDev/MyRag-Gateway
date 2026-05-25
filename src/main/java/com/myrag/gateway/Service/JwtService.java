@@ -26,26 +26,27 @@ public class JwtService {
 
     public String generateToken(String email) {
         return Jwts.builder().
-        subject(email).
-        issuedAt(new Date()).
-        expiration(new Date(System.currentTimeMillis() + expiration)).
-        signWith(getSigningKey(),Jwts.SIG.HS256).
-        compact();
+                subject(email).
+                issuedAt(new Date()).
+                expiration(new Date(System.currentTimeMillis() + expiration)).
+                signWith(getSigningKey(), Jwts.SIG.HS256).
+                compact();
     }
-    public String extractEmail(String token){
-        return extractClaims(token).getSubject(); 
+
+    public String extractEmail(String token) {
+        return extractClaims(token).getSubject();
     }
 
     public boolean isTokenValid(String token) {
-       try{
-        Claims claim = extractClaims(token);
-        return claim.getExpiration().after(new Date());
-       }catch(Exception e){
-        return false;
-       }
+        try {
+            Claims claim = extractClaims(token);
+            return claim.getExpiration().after(new Date());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    private Claims extractClaims(String token){
+    private Claims extractClaims(String token) {
         return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
     }
 
