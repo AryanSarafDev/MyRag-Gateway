@@ -8,7 +8,7 @@ import com.myrag.gateway.models.QueryRequest;
 @Service
 public class QueryService {
 
-    private AiService aiService;
+    final private AiService aiService;
 
     public QueryService(AiService aiService) {
         this.aiService = aiService;
